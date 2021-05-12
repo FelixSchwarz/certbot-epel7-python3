@@ -1,32 +1,16 @@
 %global         srcname  acme
 
-%if (0%{?fedora}) || (0%{?rhel} && 0%{?rhel} >= 8)
-%bcond_without python3
-%else
-%bcond_with python3
-%endif
-
-%if (0%{?fedora} && 0%{?fedora} >= 30) || (0%{?rhel} && 0%{?rhel} >= 8)
-%bcond_with python2
 %global         SPHINXBUILD sphinx-build-3
-%else
-%bcond_without python2
-%global         SPHINXBUILD sphinx-build
-%endif
 
 Name:           python-acme
-Version:        1.11.0
+Version:        1.14.0
 Release:        1%{?dist}
 Summary:        Python library for the ACME protocol
 License:        ASL 2.0
 URL:            https://pypi.python.org/pypi/acme
 Source0:        %{pypi_source}
 Source1:        %{pypi_source}.asc
-# Key mentioned in https://certbot.eff.org/docs/install.html#certbot-auto
-# Keyring generation steps as follows:
-#   gpg2 --keyserver pool.sks-keyservers.net --recv-key A2CFB51FA275A7286234E7B24D17C995CD9775F2
-#   gpg2 --export --export-options export-minimal A2CFB51FA275A7286234E7B24D17C995CD9775F2 > gpg-A2CFB51FA275A7286234E7B24D17C995CD9775F2.gpg
-Source2:        gpg-A2CFB51FA275A7286234E7B24D17C995CD9775F2.gpg
+Source2:        https://dl.eff.org/certbot.pub
 
 # When running tests argparse is not recognised as provided by core
 
@@ -34,62 +18,23 @@ Patch0:         epel7-setup.patch
 # see https://github.com/certbot/certbot/issues/8110
 Patch1:         %{name}-lower-pyopenssl-requirement-epel7.patch
 
-%if %{with python2}
-BuildRequires:  python2-devel
-BuildRequires:  python2-sphinx
 %if 0%{?fedora}
 BuildRequires: make
-BuildRequires:  python2-sphinx_rtd_theme
-%endif
-BuildRequires:  python2-cryptography
-BuildRequires:  python2-mock
-BuildRequires:  python2-requests >= 2.6.0
-BuildRequires:  python2-pyrfc3339
-BuildRequires:  python2-josepy >= 1.1.0
 %endif
 
-%if %{with python3}
 BuildRequires:  python3-devel
 BuildRequires:  python3-sphinx
 BuildRequires:  python3-sphinx_rtd_theme
-BuildRequires:  python3-cryptography
+BuildRequires:  python3-cryptography >= 2.1.4
 BuildRequires:  python3-requests >= 2.6.0
-BuildRequires:  python3-pyOpenSSL >= 0.15.1
+BuildRequires:  python3-pyOpenSSL >= 17.3.0
 BuildRequires:  python3-requests-toolbelt
-BuildRequires:  python3-setuptools
+BuildRequires:  python3-setuptools >= 39.0.1
 BuildRequires:  python3-pyrfc3339
 BuildRequires:  python3-josepy >= 1.1.0
-%endif
 
-%if %{with python2}
-%if 0%{?fedora} >= 28
-# Fedora 28 added versioned names for this package
-BuildRequires:  python2-pytz
-%else
-BuildRequires:  pytz
-%endif
-
-%if 0%{?rhel} && 0%{?rhel} <= 7
-# EL7 has unversioned names for these packages
-BuildRequires:  pytest
-BuildRequires:  python-ndg_httpsclient
-BuildRequires:  python-requests-toolbelt
-BuildRequires:  python-setuptools
-BuildRequires:  pyOpenSSL >= 0.13.1
-%else
-BuildRequires:  python2-ndg_httpsclient
-BuildRequires:  python2-pytest
-BuildRequires:  python2-requests-toolbelt
-BuildRequires:  python2-setuptools
-BuildRequires:  python2-pyOpenSSL >= 0.13.1
-%endif
-%endif
-
-%if %{with python3}
-BuildRequires:  python3-ndg_httpsclient
 BuildRequires:  python3-pytest
 BuildRequires:  python3-pytz
-%endif
 
 # Used to verify OpenPGP signature
 BuildRequires:  gnupg2
@@ -104,57 +49,14 @@ BuildArch:      noarch
 Python libraries implementing the Automatic Certificate Management Environment
 (ACME) protocol. It is used by the Let's Encrypt project.
 
-%if %{with python2}
-%package -n python2-acme
-Requires: python2-cryptography
-Requires: python2-pyasn1
-Requires: python2-pyrfc3339
-Requires: python2-requests >= 2.6.0
-Requires: python2-six
-Requires: python2-josepy >= 1.1.0
-
-%if 0%{?fedora} >= 28
-# Fedora 28 added versioned names for this package
-Requires:       python2-pytz
-%else
-Requires:       pytz
-%endif
-
-%if 0%{?rhel} && 0%{?rhel} <= 7
-# EL7 has unversioned names for these packages
-Requires:       python-ndg_httpsclient
-Requires:       python-requests-toolbelt
-Requires:       pyOpenSSL >= 0.13.1
-%else
-Requires:       python2-ndg_httpsclient
-Requires:       python2-requests-toolbelt
-Requires:       python2-pyOpenSSL >= 0.13.1
-%endif
-
-%if %{with python3}
-# Recommends not supported by rpm on EL7
-#Recommends: python-acme-doc
-%endif
-Summary:        %{summary}
-%{?python_provide:%python_provide python2-acme}
-
-
-%description -n python2-acme
-Python 2 library for use of the Automatic Certificate Management Environment
-protocol as defined by the IETF. It's used by the Let's Encrypt project.
-%endif
-
-%if %{with python3}
 %package -n python3-acme
-Requires: python3-cryptography
-Requires: python3-ndg_httpsclient
+Requires: python3-cryptography >= 2.1.4
 Requires: python3-pyasn1
-Requires: python3-pyOpenSSL
+Requires: python3-pyOpenSSL >= 17.3.0
 Requires: python3-pyrfc3339
 Requires: python3-pytz
 Requires: python3-requests >= 2.6.0
 Requires: python3-requests-toolbelt
-Requires: python3-six
 Requires: python3-josepy >= 1.1.0
 #Recommends: python-acme-doc
 Summary:        %{summary}
@@ -163,7 +65,6 @@ Summary:        %{summary}
 %description -n python3-acme
 Python 3 library for use of the Automatic Certificate Management Environment
 protocol as defined by the IETF. It's used by the Let's Encrypt project.
-%endif
 
 %if 0%{?fedora}
 %package doc
@@ -187,20 +88,10 @@ rm -rf %{srcname}.egg-info
 
 
 %build
-%if %{with python2}
-%py2_build
-%endif
-%if %{with python3}
 %py3_build
-%endif
 
 %install
-%if %{with python2}
-%py2_install
-%endif
-%if %{with python3}
 %py3_install
-%endif
 
 # Doc generation is currently broken on EL7, see bz#1492884
 %if 0%{?fedora}
@@ -213,29 +104,13 @@ rm -rf docs/_build/html/{.buildinfo,man,_sources}
 %endif
 
 %check
-%if %{with python2}
-%{__python2} setup.py test
-%endif
-
-%if %{with python3}
 PYTHONPATH=%{buildroot}%{python3_sitelib} py.test-%{python3_version} -v
-%endif
 
-%if %{with python2}
-%files -n python2-acme
-%license LICENSE.txt
-%doc README.rst
-%{python2_sitelib}/%{srcname}
-%{python2_sitelib}/%{srcname}-%{version}*.egg-info
-%endif
-
-%if %{with python3}
 %files -n python3-acme
 %license LICENSE.txt
 %doc README.rst
 %{python3_sitelib}/%{srcname}
 %{python3_sitelib}/%{srcname}-%{version}*.egg-info
-%endif
 
 %if 0%{?fedora}
 %files doc
@@ -245,6 +120,18 @@ PYTHONPATH=%{buildroot}%{python3_sitelib} py.test-%{python3_version} -v
 %endif
 
 %changelog
+* Wed Apr 07 2021 Felix Schwarz <fschwarz@fedoraproject.org> - 1.14.0-1
+- Update to 1.14.0 (#1946825)
+
+* Tue Mar 16 2021 Felix Schwarz <fschwarz@fedoraproject.org> - 1.13.0-1
+- Update to 1.13.0 (#1934816)
+
+* Tue Feb 2 2021 Nick Bebout <nb@fedoraproject.org> - 1.12.0-1
+- Update to 1.12.0
+
+* Wed Jan 27 2021 Fedora Release Engineering <releng@fedoraproject.org> - 1.11.0-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_34_Mass_Rebuild
+
 * Tue Jan  5 2021 Felix Schwarz <fschwarz@fedoraproject.org> - 1.11.0-1
 - update to 1.11.0 (#1913050)
 
