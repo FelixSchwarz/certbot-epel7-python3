@@ -1,6 +1,6 @@
 %global         srcname  acme
 
-%global         SPHINXBUILD sphinx-build-3
+%global py3_prefix python%{python3_pkgversion}
 
 Name:           python-acme
 Version:        1.14.0
@@ -12,29 +12,23 @@ Source0:        %{pypi_source}
 Source1:        %{pypi_source}.asc
 Source2:        https://dl.eff.org/certbot.pub
 
-# When running tests argparse is not recognised as provided by core
-
-Patch0:         epel7-setup.patch
-# see https://github.com/certbot/certbot/issues/8110
-Patch1:         %{name}-lower-pyopenssl-requirement-epel7.patch
-
 %if 0%{?fedora}
 BuildRequires: make
 %endif
 
 BuildRequires:  python3-devel
 BuildRequires:  python3-sphinx
-BuildRequires:  python3-sphinx_rtd_theme
-BuildRequires:  python3-cryptography >= 2.1.4
+BuildRequires:  %{py3_prefix}-sphinx_rtd_theme
+BuildRequires:  %{py3_prefix}-cryptography >= 2.1.4
 BuildRequires:  python3-requests >= 2.6.0
-BuildRequires:  python3-pyOpenSSL >= 17.3.0
-BuildRequires:  python3-requests-toolbelt
+BuildRequires:  %{py3_prefix}-pyOpenSSL >= 17.3.0
+BuildRequires:  %{py3_prefix}-requests-toolbelt
 BuildRequires:  python3-setuptools >= 39.0.1
-BuildRequires:  python3-pyrfc3339
-BuildRequires:  python3-josepy >= 1.1.0
+BuildRequires:  %{py3_prefix}-pyrfc3339
+BuildRequires:  %{py3_prefix}-josepy >= 1.1.0
 
-BuildRequires:  python3-pytest
-BuildRequires:  python3-pytz
+BuildRequires:  %{py3_prefix}-pytest
+BuildRequires:  %{py3_prefix}-pytz
 
 # Used to verify OpenPGP signature
 BuildRequires:  gnupg2
@@ -49,15 +43,16 @@ BuildArch:      noarch
 Python libraries implementing the Automatic Certificate Management Environment
 (ACME) protocol. It is used by the Let's Encrypt project.
 
+
 %package -n python3-acme
-Requires: python3-cryptography >= 2.1.4
+Requires: %{py3_prefix}-cryptography >= 2.1.4
 Requires: python3-pyasn1
-Requires: python3-pyOpenSSL >= 17.3.0
-Requires: python3-pyrfc3339
-Requires: python3-pytz
+Requires: %{py3_prefix}-pyOpenSSL >= 17.3.0
+Requires: %{py3_prefix}-pyrfc3339
+Requires: %{py3_prefix}-pytz
 Requires: python3-requests >= 2.6.0
-Requires: python3-requests-toolbelt
-Requires: python3-josepy >= 1.1.0
+Requires: %{py3_prefix}-requests-toolbelt
+Requires: %{py3_prefix}-josepy >= 1.1.0
 #Recommends: python-acme-doc
 Summary:        %{summary}
 %{?python_provide:%python_provide python3-acme}
@@ -68,8 +63,7 @@ protocol as defined by the IETF. It's used by the Let's Encrypt project.
 
 %if 0%{?fedora}
 %package doc
-# CSS uses @font-face … src:local("fontawesome/FontAwesome") format("truetype")
-Requires: fontawesome-fonts
+Requires: fontawesome-fonts fontawesome-fonts-web
 Summary:  Documentation for python-acme libraries
 
 %description doc
@@ -79,10 +73,6 @@ Documentation for the ACME python libraries
 %prep
 %{gpgverify} --keyring='%{SOURCE2}' --signature='%{SOURCE1}' --data='%{SOURCE0}'
 %setup -n %{srcname}-%{version}
-%if 0%{?rhel} && 0%{?rhel} == 7
-%patch0 -p1
-%patch1 -p1
-%endif
 # Remove bundled egg-info
 rm -rf %{srcname}.egg-info
 
@@ -98,7 +88,7 @@ rm -rf %{srcname}.egg-info
 # man page is pretty useless but api pages are decent
 # Issue opened upstream for improving man page
 # Need to cd as parent makefile tries to build libraries
-(  cd docs && make html SPHINXBUILD=%{SPHINXBUILD} )
+(  cd docs && make html SPHINXBUILD=sphinx-build-3 )
 # Clean up stuff we don't need for docs
 rm -rf docs/_build/html/{.buildinfo,man,_sources}
 %endif
