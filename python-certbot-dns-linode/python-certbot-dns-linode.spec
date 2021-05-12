@@ -1,4 +1,5 @@
 %global pypi_name certbot-dns-linode
+%global py3_prefix python%{python3_pkgversion}
 
 %if 0%{?rhel} && 0%{?rhel} <= 7
 # EL7 has problems building the documentation due to #1492884
@@ -24,8 +25,9 @@ BuildRequires:  python3-acme >= 0.31.0
 BuildRequires:  python3-certbot >= 1.1.0
 BuildRequires:  python3-devel
 BuildRequires:  python3-dns-lexicon >= 2.2.3
-BuildRequires:  python3-pytest
+BuildRequires:  %{py3_prefix}-pytest
 BuildRequires:  python3-setuptools
+BuildRequires:  %{py3_prefix}-zope-interface
 
 %if %{with docs}
 BuildRequires:  python3-sphinx
@@ -46,7 +48,7 @@ Requires:       python3-acme >= 0.31.0
 Requires:       python3-certbot >= 1.1.0
 Requires:       python3-dns-lexicon >= 2.2.3
 Requires:       python3-setuptools
-Requires:       python3-zope-interface
+Requires:       %{py3_prefix}-zope-interface
 
 # Provide the name users expect as a certbot plugin
 %if 0%{?fedora}
