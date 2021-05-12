@@ -1,4 +1,5 @@
 %global pypi_name certbot-dns-dnsimple
+%global py3_prefix python%{python3_pkgversion}
 
 Name:           python-%{pypi_name}
 Version:        1.14.0
@@ -17,13 +18,13 @@ BuildRequires:  python3-acme >= 0.31.0
 BuildRequires:  python3-certbot >= 1.1.0
 BuildRequires:  python3-devel
 BuildRequires:  python3-dns-lexicon >= 3.2.1
-BuildRequires:  python3-pytest
+BuildRequires:  %{py3_prefix}-pytest
 BuildRequires:  python3-setuptools
-BuildRequires:  python3-zope-interface
+BuildRequires:  %{py3_prefix}-zope-interface
 
 # Required for documentation
 BuildRequires:  python3-sphinx
-BuildRequires:  python3-sphinx_rtd_theme
+BuildRequires:  %{py3_prefix}-sphinx_rtd_theme
 
 # Used to verify OpenPGP signature
 BuildRequires:  gnupg2
@@ -39,7 +40,7 @@ Requires:       python3-acme >= 0.31.0
 Requires:       python3-certbot >= 1.1.0
 Requires:       python3-dns-lexicon >= 3.2.1
 Requires:       python3-setuptools
-Requires:       python3-zope-interface
+Requires:       %{py3_prefix}-zope-interface
 
 # Provide the name users expect as a certbot plugin
 %if 0%{?fedora}
