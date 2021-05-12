@@ -1,4 +1,5 @@
 %global pypi_name certbot-nginx
+%global py3_prefix python%{python3_pkgversion}
 
 Name:       python-%{pypi_name}
 Version:    1.14.0
@@ -23,11 +24,11 @@ BuildRequires:  python3-devel
 
 BuildRequires: python3-acme >= 1.4.0
 BuildRequires: python3-certbot >= 1.6.0
-BuildRequires: python3-pyOpenSSL >= 17.3.0
-BuildRequires: python3-pyparsing >= 2.1.0
-BuildRequires: python3-pytest
+BuildRequires: %{py3_prefix}-pyOpenSSL >= 17.3.0
+BuildRequires: %{py3_prefix}-pyparsing >= 2.1.0
+BuildRequires: %{py3_prefix}-pytest
 BuildRequires: python3-setuptools >= 39.0.1
-BuildRequires: python3-zope-interface
+BuildRequires: %{py3_prefix}-zope-interface
 
 # Used to verify OpenPGP signature
 BuildRequires:  gnupg2
@@ -45,10 +46,10 @@ Provides:      %{pypi_name} = %{version}-%{release}
 # an extension to the certbot python libraries
 Requires:      python3-acme >= 1.4.0
 Requires:      python3-certbot >= 1.6.0
-Requires:      python3-pyOpenSSL >= 17.3.0
-Requires:      python3-pyparsing >= 2.1.0
+Requires:      %{py3_prefix}-pyOpenSSL >= 17.3.0
+Requires:      %{py3_prefix}-pyparsing >= 2.1.0
 Requires:      python3-setuptools >= 39.0.1
-Requires:      python3-zope-interface
+Requires:      %{py3_prefix}-zope-interface
 %if 0%{?fedora}
 #Recommend the CLI as that will be the interface most use
 Recommends:    certbot >= 1.4.0
