@@ -1,0 +1,25 @@
+Installieren:
+ python-boto3                                     noarch                                1.4.6-5.el7                                                 base                                132 k
+Als Abhängigkeiten installiert:
+ jbigkit-libs                                     x86_64                                2.0-11.el7                                                  base                                 46 k
+ libtiff                                          x86_64                                4.0.3-32.el7                                                base                                171 k
+ libwebp                                          x86_64                                0.3.0-7.el7                                                 base                                170 k
+ python-dateutil                                  noarch                                1.5-7.el7                                                   base                                 85 k
+ python-docutils                                  noarch                                0.11-0.3.20130715svn7687.el7                                base                                1.5 M
+ python-pillow                                    x86_64                                2.0.0-20.gitd1c6db8.el7_7                                   base                                439 k
+ python-s3transfer                                noarch                                0.1.13-1.el7.0.1                                            base                                2.9 M
+
+
+import sys
+sys.path.insert(0, '/usr/lib/fence-agents/bundled')
+import jmespath
+from botocore import xform_name
+
+
+# rpm -qf /usr/lib/fence-agents/bundled
+python-s3transfer-0.1.13-1.el7.0.1.noarch
+
+
+
+Successfully installed cffi-1.14.0 cryptography-2.9.2 pyOpenSSL-19.1.0 pycparser-2.20 six-1.14.0
+
