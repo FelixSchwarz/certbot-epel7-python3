@@ -1,4 +1,5 @@
 %global pypi_name certbot-dns-gehirn
+%global py3_prefix python%{python3_pkgversion}
 
 %if 0%{?rhel} && 0%{?rhel} == 7
 %bcond_with docs
@@ -23,7 +24,7 @@ BuildRequires:  python3-acme >= 0.31.0
 BuildRequires:  python3-certbot >= 1.1.0
 BuildRequires:  python3-devel
 BuildRequires:  python3-dns-lexicon >= 2.1.22
-BuildRequires:  python3-pytest
+BuildRequires:  %{py3_prefix}-pytest
 BuildRequires:  python3-setuptools
 
 %if %{with docs}
