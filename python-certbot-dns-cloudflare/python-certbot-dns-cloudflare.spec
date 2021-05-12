@@ -1,4 +1,5 @@
 %global pypi_name certbot-dns-cloudflare
+%global py3_prefix python%{python3_pkgversion}
 
 Name:           python-%{pypi_name}
 Version:        1.14.0
@@ -14,14 +15,14 @@ Source2:        https://dl.eff.org/certbot.pub
 BuildArch:      noarch
 
 BuildRequires:  python3-sphinx
-BuildRequires:  python3-sphinx_rtd_theme
+BuildRequires:  %{py3_prefix}-sphinx_rtd_theme
 BuildRequires:  python3-acme >= 0.29.0
 BuildRequires:  python3-certbot >= 1.1.0
-BuildRequires:  python3-cloudflare >= 1.5.1
+BuildRequires:  %{py3_prefix}-cloudflare >= 1.5.1
 BuildRequires:  python3-devel
-BuildRequires:  python3-pytest
+BuildRequires:  %{py3_prefix}-pytest
 BuildRequires:  python3-setuptools
-BuildRequires:  python3-zope-interface
+BuildRequires:  %{py3_prefix}-zope-interface
 BuildRequires:  python3-PyYAML
 
 # Used to verify OpenPGP signature
@@ -36,9 +37,9 @@ Summary:        %{summary}
 
 Requires:       python3-acme >= 0.29.0
 Requires:       python3-certbot >= 1.1.0
-Requires:       python3-cloudflare >= 1.5.1
+Requires:       %{py3_prefix}-cloudflare >= 1.5.1
 Requires:       python3-setuptools >= 39.0.1
-Requires:       python3-zope-interface
+Requires:       %{py3_prefix}-zope-interface
 
 # Provide the name users expect as a certbot plugin
 %if 0%{?fedora}
