@@ -1,4 +1,5 @@
 %global pypi_name certbot-dns-digitalocean
+%global py3_prefix python%{python3_pkgversion}
 
 Name:           python-%{pypi_name}
 Version:        1.14.0
@@ -16,10 +17,10 @@ BuildArch:      noarch
 BuildRequires:  python3-acme >= 0.29.0
 BuildRequires:  python3-certbot >= 1.1.0
 BuildRequires:  python3-devel
-BuildRequires:  python3-digitalocean >= 1.11
-BuildRequires:  python3-pytest
+BuildRequires:  %{py3_prefix}-digitalocean >= 1.11
+BuildRequires:  %{py3_prefix}-pytest
 BuildRequires:  python3-setuptools
-BuildRequires:  python3-zope-interface
+BuildRequires:  %{py3_prefix}-zope-interface
 
 # Used to verify OpenPGP signature
 BuildRequires:  gnupg2
@@ -38,8 +39,8 @@ Provides:       %{pypi_name} = %{version}-%{release}
 # an extension to the certbot python libraries
 Requires:       python3-acme >= 0.29.0
 Requires:       python3-certbot >= 1.1.0
-Requires:       python3-digitalocean >= 1.11
-Requires:       python3-zope-interface
+Requires:       %{py3_prefix}-digitalocean >= 1.11
+Requires:       %{py3_prefix}-zope-interface
 
 %if 0%{?fedora}
 #Recommend the CLI as that will be the interface most use
