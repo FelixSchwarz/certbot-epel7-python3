@@ -21,11 +21,7 @@ License:        ASL 2.0
 URL:            https://github.com/certbot/certbot
 Source0:        %{pypi_source}
 Source1:        %{pypi_source}.asc
-# Key mentioned in https://certbot.eff.org/docs/install.html#certbot-auto
-# Keyring generation steps as follows:
-#   gpg2 --keyserver pool.sks-keyservers.net --recv-key A2CFB51FA275A7286234E7B24D17C995CD9775F2
-#   gpg2 --export --export-options export-minimal A2CFB51FA275A7286234E7B24D17C995CD9775F2 > gpg-A2CFB51FA275A7286234E7B24D17C995CD9775F2.gpg
-Source2:        gpg-A2CFB51FA275A7286234E7B24D17C995CD9775F2.gpg
+Source2:        https://dl.eff.org/certbot.pub
 
 BuildArch:      noarch
 
