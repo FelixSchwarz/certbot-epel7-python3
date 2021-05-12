@@ -1,0 +1,6 @@
+# TESTS:
+addFilter(r'pem-certificate /usr/lib/python\d\.\d/site-packages/certbot/tests/testdata')
+
+# VERSIONED COMMANDS:
+addFilter(r'no-manual-page-for-binary certbot-\d$')
+addFilter(r'dangling-symlink /usr/bin/certbot /usr/bin/certbot-\d$')
