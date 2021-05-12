@@ -40,7 +40,6 @@ Requires:       python3-certbot >= 1.1.0
 Requires:       python3-dns-lexicon >= 3.2.1
 Requires:       python3-setuptools
 Requires:       python3-zope-interface
-Requires:       python3-setuptools
 
 # Provide the name users expect as a certbot plugin
 %if 0%{?fedora}
