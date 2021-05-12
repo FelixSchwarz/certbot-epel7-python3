@@ -1,18 +1,10 @@
 %global pypi_name certbot-dns-ovh
 
 %if 0%{?rhel} && 0%{?rhel} <= 7
-%bcond_with python3
 # EL7 has problems building the documentation due to #1492884
 %bcond_with docs
 %else
-%bcond_without python3
 %bcond_without docs
-%endif
-
-%if 0%{?fedora} || (0%{?rhel} && 0%{?rhel} >= 8)
-%bcond_with python2
-%else
-%bcond_without python2
 %endif
 
 Name:           python-%{pypi_name}
@@ -28,24 +20,6 @@ Source2:        https://dl.eff.org/certbot.pub
 
 BuildArch:      noarch
 
-%if %{with python2}
-BuildRequires:  python2-acme >= 0.31.0
-BuildRequires:  python2-certbot >= 1.1.0
-BuildRequires:  python2-devel
-BuildRequires:  python2-dns-lexicon >= 2.7.14
-BuildRequires:  python2-mock
-BuildRequires:  python2-setuptools
-BuildRequires:  python2-zope-interface
-
-%if 0%{?rhel} && 0%{?rhel} <= 7
-# EL7 has unversioned names for these packages
-BuildRequires:  pytest
-%else
-BuildRequires:  python2-pytest
-%endif
-%endif
-
-%if %{with python3}
 BuildRequires:  python3-acme >= 0.31.0
 BuildRequires:  python3-certbot >= 1.1.0
 BuildRequires:  python3-devel
@@ -53,7 +27,6 @@ BuildRequires:  python3-dns-lexicon >= 2.7.14
 BuildRequires:  python3-pytest
 BuildRequires:  python3-setuptools
 BuildRequires:  python3-zope-interface
-%endif
 
 %if %{with docs}
 BuildRequires:  python3-sphinx
@@ -66,30 +39,6 @@ BuildRequires:  gnupg2
 %description
 OVH DNS Authenticator plugin for Certbot
 
-%if %{with python2}
-%package -n     python2-%{pypi_name}
-Summary:        %{summary}
-%{?python_provide:%python_provide python2-%{pypi_name}}
-
-Requires:       python2-acme >= 0.31.0
-Requires:       python2-certbot >= 1.1.0
-Requires:       python2-dns-lexicon >= 2.7.14
-Requires:       python2-mock
-Requires:       python2-setuptools
-Requires:       python2-zope-interface
-
-# Provide the name users expect as a certbot plugin
-%if 0%{?rhel} && 0%{?rhel} <= 7
-Provides:      %{pypi_name} = %{version}-%{release}
-%endif
-
-%description -n python2-%{pypi_name}
-OVH DNS Authenticator plugin for Certbot
-
-This is the Python 2 version of the package.
-%endif
-
-%if %{with python3}
 %package -n     python3-%{pypi_name}
 Summary:        %{summary}
 %{?python_provide:%python_provide python3-%{pypi_name}}
@@ -109,7 +58,6 @@ Provides:      %{pypi_name} = %{version}-%{release}
 OVH DNS Authenticator plugin for Certbot
 
 This is the Python 3 version of the package.
-%endif
 
 %if %{with docs}
 %package -n python-%{pypi_name}-doc
@@ -125,13 +73,7 @@ Documentation for python-certbot-dns-ovh
 rm -rf %{pypi_name}.egg-info
 
 %build
-%if %{with python2}
-%py2_build
-%endif
-
-%if %{with python3}
 %py3_build
-%endif
 
 %if %{with docs}
 sphinx-build-3 docs html
@@ -139,38 +81,16 @@ rm -rf html/.{doctrees,buildinfo}
 %endif
 
 %install
-%if %{with python2}
-%py2_install
-%endif
-
-%if %{with python3}
 %py3_install
-%endif
 
 %check
-%if %{with python2}
-%{__python2} -m pytest
-%endif
-
-%if %{with python3}
 %{__python3} -m pytest
-%endif
 
-%if %{with python2}
-%files -n python2-%{pypi_name}
-%license LICENSE.txt
-%doc README.rst
-%{python2_sitelib}/certbot_dns_ovh
-%{python2_sitelib}/certbot_dns_ovh-%{version}-py?.?.egg-info
-%endif
-
-%if %{with python3}
 %files -n python3-%{pypi_name}
 %license LICENSE.txt
 %doc README.rst
 %{python3_sitelib}/certbot_dns_ovh
 %{python3_sitelib}/certbot_dns_ovh-%{version}-py%{python3_version}.egg-info
-%endif
 
 %if %{with docs}
 %files doc
