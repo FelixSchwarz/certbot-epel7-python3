@@ -1,0 +1,13 @@
+diff --git a/setup.py b/setup.py
+index 231d5cb..0e3a048 100644
+--- a/setup.py
++++ b/setup.py
+@@ -18,7 +18,7 @@ install_requires = [
+     # https://github.com/certbot/josepy/issues/13.
+     'josepy>=1.1.0',
+     # Connection.set_tlsext_host_name (>=0.13) + matching Xenial requirements (>=0.15.1)
+-    'PyOpenSSL>=0.15.1',
++    'PyOpenSSL>=0.13.1',
+     'pyrfc3339',
+     'pytz',
+     'requests>=2.6.0',  # security extras added in 2.4.1
