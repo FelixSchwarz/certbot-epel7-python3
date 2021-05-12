@@ -1,4 +1,5 @@
 %global pypi_name certbot-dns-rfc2136
+%global py3_prefix python%{python3_pkgversion}
 
 # This plugin is pinned to the version of certbot it was released to work
 # with (per upstream), so we specify a version dependency in both Requires
@@ -36,13 +37,13 @@ Requires:       python3-acme >= 0.29.0
 Requires:       python3-certbot >= 1.1.0
 Requires:       python3-dns
 Requires:       python3-setuptools
-Requires:       python3-zope-interface
+Requires:       %{py3_prefix}-zope-interface
 BuildRequires:  python3-acme >= 0.29.0
 BuildRequires:  python3-certbot >= 1.1.0
 BuildRequires:  python3-dns
-BuildRequires:  python3-pytest
+BuildRequires:  %{py3_prefix}-pytest
 BuildRequires:  python3-setuptools
-BuildRequires:  python3-zope-interface
+BuildRequires:  %{py3_prefix}-zope-interface
 
 %description -n python3-%{pypi_name}
 The certbot-dns-rfc2136 plugin automates the process of completing an ACME
