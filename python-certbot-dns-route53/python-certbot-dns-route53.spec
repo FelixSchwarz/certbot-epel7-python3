@@ -1,4 +1,5 @@
 %global pypi_name certbot-dns-route53
+%global py3_prefix python%{python3_pkgversion}
 
 Name:           python-%{pypi_name}
 Version:        1.14.0
@@ -20,9 +21,9 @@ BuildRequires:  python3-boto3
 BuildRequires:  python3-botocore
 BuildRequires:  python3-certbot >= 1.1.0
 BuildRequires:  python3-devel
-BuildRequires:  python3-pytest
+BuildRequires:  %{py3_prefix}-pytest
 BuildRequires:  python3-setuptools
-BuildRequires:  python3-zope-interface
+BuildRequires:  %{py3_prefix}-zope-interface
 
 # Used to verify OpenPGP signature
 BuildRequires:  gnupg2
@@ -45,7 +46,7 @@ Requires:       python3-boto3
 # does not declare this in setup.py
 Requires:       python3-botocore
 Requires:       python3-certbot >= 1.1.0
-Requires:       python3-zope-interface
+Requires:       %{py3_prefix}-zope-interface
 
 %if 0%{?fedora}
 #Recommend the CLI as that will be the interface most use
