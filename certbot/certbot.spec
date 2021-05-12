@@ -7,6 +7,8 @@
 %bcond_with docs
 %endif
 
+%global py3_prefix python%{python3_pkgversion}
+
 Name:           certbot
 Version:        1.14.0
 Release:        1%{?dist}
@@ -26,19 +28,19 @@ Source13:       certbot-README.fedora
 BuildArch:      noarch
 
 BuildRequires:  python3-acme >= 1.8.0
-BuildRequires:  python3-configargparse >= 0.9.3
+BuildRequires:  %{py3_prefix}-configargparse >= 0.9.3
 BuildRequires:  python3-configobj >= 5.0.6
-BuildRequires:  python3-cryptography >= 2.1.4
+BuildRequires:  %{py3_prefix}-cryptography >= 2.1.4
 BuildRequires:  python3-devel
-BuildRequires:  python3-distro >= 1.0.1
-BuildRequires:  python3-josepy >= 1.1.0
+BuildRequires:  %{py3_prefix}-distro >= 1.0.1
+BuildRequires:  %{py3_prefix}-josepy >= 1.1.0
 BuildRequires:  python3-parsedatetime >= 2.4
-BuildRequires:  python3-pyrfc3339
-BuildRequires:  python3-pytest
-BuildRequires:  python3-pytz
+BuildRequires:  %{py3_prefix}-pyrfc3339
+BuildRequires:  %{py3_prefix}-pytest
+BuildRequires:  %{py3_prefix}-pytz
 BuildRequires:  python3-setuptools >= 39.0.1
-BuildRequires:  python3-zope-component
-BuildRequires:  python3-zope-interface
+BuildRequires:  %{py3_prefix}-zope-component
+BuildRequires:  %{py3_prefix}-zope-interface
 
 
 %if %{with docs}
@@ -76,16 +78,16 @@ to lower the barriers to entry for encrypting all HTTP traffic on the internet.
 
 %package -n python3-certbot
 Requires:       python3-acme >= 1.8.0
-Requires:       python3-configargparse
+Requires:       %{py3_prefix}-configargparse >= 0.9.3
 Requires:       python3-configobj >= 5.0.6
-Requires:       python3-cryptography >= 2.1.4
+Requires:       %{py3_prefix}-cryptography >= 2.1.4
 Requires:       python3-distro
-Requires:       python3-josepy >= 1.1.0
+Requires:       %{py3_prefix}-josepy >= 1.1.0
 Requires:       python3-parsedatetime >= 2.4
-Requires:       python3-pyrfc3339
-Requires:       python3-pytz
+Requires:       %{py3_prefix}-pyrfc3339
+Requires:       %{py3_prefix}-pytz
 Requires:       python3-zope-component
-Requires:       python3-zope-interface
+Requires:       %{py3_prefix}-zope-interface
 
 Summary:    Python 3 libraries used by certbot
 %{?python_provide:%python_provide python3-certbot}
