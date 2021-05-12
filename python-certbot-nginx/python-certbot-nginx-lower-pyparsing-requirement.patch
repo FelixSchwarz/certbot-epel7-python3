@@ -1,0 +1,13 @@
+diff --git a/setup.py b/setup.py
+index 7bd4070..97cfeac 100644
+--- a/setup.py
++++ b/setup.py
+@@ -13,7 +13,7 @@ install_requires = [
+     'acme>=1.4.0',
+     'certbot>=1.6.0',
+     'PyOpenSSL>=17.3.0',
+-    'pyparsing>=2.2.0',
++    'pyparsing>=2.1.10',
+     'setuptools>=39.0.1',
+     'zope.interface',
+ ]
