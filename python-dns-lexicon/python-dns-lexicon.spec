@@ -105,7 +105,100 @@ standardized way. Lexicon has a CLI but it can also be used as a python
 library.
 
 This is the Python 2 version of the package.
+
+
+# Extras meta-packages (Python 2)
+# {{{
+%if %{with extras}
+%package -n     python2-%{pypi_name}+easyname
+Summary:        Meta-package for python2-%{pypi_name} and easyname provider
+%{?python_provide:%python_provide python2-%{pypi_name}+easyname}
+
+Requires:       python2-%{pypi_name} = %{version}-%{release}
+# EL7 has an unversioned name for this package
+Requires:       python-beautifulsoup4
+
+%description -n python2-%{pypi_name}+easyname
+This package installs no files. It requires python2-%{pypi_name} and all
+dependencies necessary to use the easyname provider.
+
+
+%package -n     python2-%{pypi_name}+gratisdns
+Summary:        Meta-package for python2-%{pypi_name} and gratisdns provider
+%{?python_provide:%python_provide python2-%{pypi_name}+gratisdns}
+
+Requires:       python2-%{pypi_name} = %{version}-%{release}
+# EL7 has an unversioned name for this package
+Requires:       python-beautifulsoup4
+
+%description -n python2-%{pypi_name}+gratisdns
+This package installs no files. It requires python2-%{pypi_name} and all
+dependencies necessary to use the gratisdns provider.
+
+
+%package -n     python2-%{pypi_name}+henet
+Summary:        Meta-package for python2-%{pypi_name} and Hurricane Electric provider
+%{?python_provide:%python_provide python2-%{pypi_name}+henet}
+
+Requires:       python2-%{pypi_name} = %{version}-%{release}
+# EL7 has an unversioned name for this package
+Requires:       python-beautifulsoup4
+
+%description -n python2-%{pypi_name}+henet
+This package installs no files. It requires python2-%{pypi_name} and all
+dependencies necessary to use the Hurricane Electric provider.
+
+
+%package -n     python2-%{pypi_name}+plesk
+Summary:        Meta-package for python2-%{pypi_name} and Plesk provider
+%{?python_provide:%python_provide python2-%{pypi_name}+plesk}
+
+Requires:       python2-%{pypi_name} = %{version}-%{release}
+# EL7 has an unversioned name for this package
+Requires:       python-xmltodict
+
+%description -n python2-%{pypi_name}+plesk
+This package installs no files. It requires python2-%{pypi_name} and all
+dependencies necessary to use the Plesk provider.
+
+
+%package -n     python2-%{pypi_name}+route53
+Summary:        Meta-package for python2-%{pypi_name} and Route 53 provider
+%{?python_provide:%python_provide python2-%{pypi_name}+route53}
+
+Requires:       python2-%{pypi_name} = %{version}-%{release}
+# EL7 has an unversioned name for this package
+Requires:       python-boto3
+
+%description -n python2-%{pypi_name}+route53
+This package installs no files. It requires python2-%{pypi_name} and all
+dependencies necessary to use the Route 53 provider.
+
+
+%if ! 0%{?rhel7}
+# EL7 does not have the dependencies necessary for this meta-package
+# {{{
+
+%package -n     python2-%{pypi_name}+hetzner
+Summary:        Meta-package for python2-%{pypi_name} and Hetzner provider
+%{?python_provide:%python_provide python2-%{pypi_name}+hetzner}
+
+Requires:       python2-%{pypi_name} = %{version}-%{release}
+Requires:       python2-beautifulsoup4
+Requires:       python2-dns >= 1.15.0
+
+%description -n python2-%{pypi_name}+hetzner
+This package installs no files. It requires python2-%{pypi_name} and all
+dependencies necessary to use the Hetzner provider.
+# }}}
 %endif
+
+%endif
+# }}}
+%endif
+
+
+
 
 %if %{with python3}
 %package -n     python3-%{pypi_name}
@@ -130,27 +223,11 @@ standardized way. Lexicon has a CLI but it can also be used as a python
 library.
 
 This is the Python 3 version of the package.
-%endif
 
-# Extras meta-packages
+
+# Extras meta-packages (Python 3)
 # {{{
 %if %{with extras}
-
-%if %{with python2}
-%package -n     python2-%{pypi_name}+easyname
-Summary:        Meta-package for python2-%{pypi_name} and easyname provider
-%{?python_provide:%python_provide python2-%{pypi_name}+easyname}
-
-Requires:       python2-%{pypi_name} = %{version}-%{release}
-# EL7 has an unversioned name for this package
-Requires:       python-beautifulsoup4
-
-%description -n python2-%{pypi_name}+easyname
-This package installs no files. It requires python2-%{pypi_name} and all
-dependencies necessary to use the easyname provider.
-%endif
-
-%if %{with python3}
 %package -n     python3-%{pypi_name}+easyname
 Summary:        Meta-package for python3-%{pypi_name} and easyname provider
 %{?python_provide:%python_provide python3-%{pypi_name}+easyname}
@@ -161,23 +238,8 @@ Requires:       python3-beautifulsoup4
 %description -n python3-%{pypi_name}+easyname
 This package installs no files. It requires python3-%{pypi_name} and all
 dependencies necessary to use the easyname provider.
-%endif
 
-%if %{with python2}
-%package -n     python2-%{pypi_name}+gratisdns
-Summary:        Meta-package for python2-%{pypi_name} and gratisdns provider
-%{?python_provide:%python_provide python2-%{pypi_name}+gratisdns}
 
-Requires:       python2-%{pypi_name} = %{version}-%{release}
-# EL7 has an unversioned name for this package
-Requires:       python-beautifulsoup4
-
-%description -n python2-%{pypi_name}+gratisdns
-This package installs no files. It requires python2-%{pypi_name} and all
-dependencies necessary to use the gratisdns provider.
-%endif
-
-%if %{with python3}
 %package -n     python3-%{pypi_name}+gratisdns
 Summary:        Meta-package for python3-%{pypi_name} and gratisdns provider
 %{?python_provide:%python_provide python3-%{pypi_name}+gratisdns}
@@ -188,23 +250,8 @@ Requires:       python3-beautifulsoup4
 %description -n python3-%{pypi_name}+gratisdns
 This package installs no files. It requires python3-%{pypi_name} and all
 dependencies necessary to use the gratisdns provider.
-%endif
 
-%if %{with python2}
-%package -n     python2-%{pypi_name}+henet
-Summary:        Meta-package for python2-%{pypi_name} and Hurricane Electric provider
-%{?python_provide:%python_provide python2-%{pypi_name}+henet}
 
-Requires:       python2-%{pypi_name} = %{version}-%{release}
-# EL7 has an unversioned name for this package
-Requires:       python-beautifulsoup4
-
-%description -n python2-%{pypi_name}+henet
-This package installs no files. It requires python2-%{pypi_name} and all
-dependencies necessary to use the Hurricane Electric provider.
-%endif
-
-%if %{with python3}
 %package -n     python3-%{pypi_name}+henet
 Summary:        Meta-package for python3-%{pypi_name} and Hurricane Electric provider
 %{?python_provide:%python_provide python3-%{pypi_name}+henet}
@@ -215,23 +262,8 @@ Requires:       python3-beautifulsoup4
 %description -n python3-%{pypi_name}+henet
 This package installs no files. It requires python3-%{pypi_name} and all
 dependencies necessary to use the Hurricane Electric provider.
-%endif
 
-%if %{with python2}
-%package -n     python2-%{pypi_name}+plesk
-Summary:        Meta-package for python2-%{pypi_name} and Plesk provider
-%{?python_provide:%python_provide python2-%{pypi_name}+plesk}
 
-Requires:       python2-%{pypi_name} = %{version}-%{release}
-# EL7 has an unversioned name for this package
-Requires:       python-xmltodict
-
-%description -n python2-%{pypi_name}+plesk
-This package installs no files. It requires python2-%{pypi_name} and all
-dependencies necessary to use the Plesk provider.
-%endif
-
-%if %{with python3}
 %package -n     python3-%{pypi_name}+plesk
 Summary:        Meta-package for python3-%{pypi_name} and Plesk provider
 %{?python_provide:%python_provide python3-%{pypi_name}+plesk}
@@ -242,23 +274,8 @@ Requires:       python3-xmltodict
 %description -n python3-%{pypi_name}+plesk
 This package installs no files. It requires python3-%{pypi_name} and all
 dependencies necessary to use the Plesk provider.
-%endif
 
-%if %{with python2}
-%package -n     python2-%{pypi_name}+route53
-Summary:        Meta-package for python2-%{pypi_name} and Route 53 provider
-%{?python_provide:%python_provide python2-%{pypi_name}+route53}
 
-Requires:       python2-%{pypi_name} = %{version}-%{release}
-# EL7 has an unversioned name for this package
-Requires:       python-boto3
-
-%description -n python2-%{pypi_name}+route53
-This package installs no files. It requires python2-%{pypi_name} and all
-dependencies necessary to use the Route 53 provider.
-%endif
-
-%if %{with python3}
 %package -n     python3-%{pypi_name}+route53
 Summary:        Meta-package for python3-%{pypi_name} and Route 53 provider
 %{?python_provide:%python_provide python3-%{pypi_name}+route53}
@@ -269,27 +286,8 @@ Requires:       python3-boto3
 %description -n python3-%{pypi_name}+route53
 This package installs no files. It requires python3-%{pypi_name} and all
 dependencies necessary to use the Route 53 provider.
-%endif
 
-%if ! 0%{?rhel7}
-# EL7 does not have the dependencies necessary for this meta-package
-# {{{
 
-%if %{with python2}
-%package -n     python2-%{pypi_name}+hetzner
-Summary:        Meta-package for python2-%{pypi_name} and Hetzner provider
-%{?python_provide:%python_provide python2-%{pypi_name}+hetzner}
-
-Requires:       python2-%{pypi_name} = %{version}-%{release}
-Requires:       python2-beautifulsoup4
-Requires:       python2-dns >= 1.15.0
-
-%description -n python2-%{pypi_name}+hetzner
-This package installs no files. It requires python2-%{pypi_name} and all
-dependencies necessary to use the Hetzner provider.
-%endif
-
-%if %{with python3}
 %package -n     python3-%{pypi_name}+hetzner
 Summary:        Meta-package for python3-%{pypi_name} and Hetzner provider
 %{?python_provide:%python_provide python3-%{pypi_name}+hetzner}
@@ -305,8 +303,7 @@ dependencies necessary to use the Hetzner provider.
 # }}}
 %endif
 
-%endif
-# }}}
+
 
 %prep
 %setup -n %{pypi_name}-%{version}
