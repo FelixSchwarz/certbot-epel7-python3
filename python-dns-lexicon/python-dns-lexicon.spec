@@ -176,25 +176,6 @@ Requires:       python-boto3
 This package installs no files. It requires python2-%{pypi_name} and all
 dependencies necessary to use the Route 53 provider.
 
-
-%if ! 0%{?rhel7}
-# EL7 does not have the dependencies necessary for this meta-package
-# {{{
-
-%package -n     python2-%{pypi_name}+hetzner
-Summary:        Meta-package for python2-%{pypi_name} and Hetzner provider
-%{?python_provide:%python_provide python2-%{pypi_name}+hetzner}
-
-Requires:       python2-%{pypi_name} = %{version}-%{release}
-Requires:       python2-beautifulsoup4
-Requires:       python2-dns >= 1.15.0
-
-%description -n python2-%{pypi_name}+hetzner
-This package installs no files. It requires python2-%{pypi_name} and all
-dependencies necessary to use the Hetzner provider.
-# }}}
-%endif
-
 %endif
 # }}}
 %endif
