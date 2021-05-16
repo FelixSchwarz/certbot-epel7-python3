@@ -1,0 +1,80 @@
+diff --git a/python-dns-lexicon.spec b/python-dns-lexicon.spec
+index ca43f16..524b244 100644
+--- a/python-dns-lexicon.spec
++++ b/python-dns-lexicon.spec
+@@ -4,14 +4,8 @@
+ %global rhel7 1
+ %endif
+ 
+-%if 0%{?rhel7}
+-%bcond_with python3
+ %bcond_without python2
+-%else
+-# RHEL 8/Fedora: Python 3 only
+ %bcond_without python3
+-%bcond_with python2
+-%endif
+ 
+ %if 0%{?rhel} >= 8
+ # EPEL8 is currently missing dependencies used by the extras metapackages
+@@ -58,19 +52,19 @@ BuildRequires:  python-xmltodict
+ %if %{with python3}
+ BuildRequires:  python3-devel
+ BuildRequires:  python3-setuptools
+-BuildRequires:  python3-cryptography
++BuildRequires:  python36-cryptography
+ BuildRequires:  python3-future
+-BuildRequires:  python3-pyOpenSSL
+-BuildRequires:  python3-tldextract
+-BuildRequires:  python3-pyyaml
++BuildRequires:  python36-pyOpenSSL
++BuildRequires:  python36-tldextract
++BuildRequires:  python36-pyyaml
+ 
+ # Extras requirements
+ # {{{
+ %if %{with extras}
+-BuildRequires:  python3-beautifulsoup4
+-BuildRequires:  python3-boto3
+-BuildRequires:  python3-dns >= 1.15.0
+-BuildRequires:  python3-xmltodict
++BuildRequires:  python36-beautifulsoup4
++BuildRequires:  python36-boto3
++BuildRequires:  python36-dns >= 1.15.0
++BuildRequires:  python36-xmltodict
+ %endif
+ # }}}
+ 
+@@ -112,13 +106,13 @@ This is the Python 2 version of the package.
+ Summary:        %{summary}
+ %{?python_provide:%python_provide python3-%{pypi_name}}
+ 
+-Requires:       python3-cryptography
++Requires:       python36-cryptography
+ Requires:       python3-future
+ Requires:       python3-requests
+ Requires:       python3-setuptools
+-Requires:       python3-pyOpenSSL
+-Requires:       python3-tldextract
+-Requires:       python3-pyyaml
++Requires:       python36-pyOpenSSL
++Requires:       python36-tldextract
++Requires:       python36-pyyaml
+ 
+ # Both packages install a Python module named lexicon
+ # TODO: Remove this once resolved upstream (see upstream #222)
+@@ -373,14 +367,6 @@ ln -s %{_bindir}/lexicon-%{python3_version} %{buildroot}/%{_bindir}/lexicon-3
+ 
+ # Extras meta-packages
+ # {{{
+-%if %{with extras}
+-%files -n python3-%{pypi_name}+easyname
+-%files -n python3-%{pypi_name}+gratisdns
+-%files -n python3-%{pypi_name}+henet
+-%files -n python3-%{pypi_name}+hetzner
+-%files -n python3-%{pypi_name}+plesk
+-%files -n python3-%{pypi_name}+route53
+-%endif
+ # }}}
+ %endif
+ 
