@@ -7,17 +7,19 @@
 %if 0%{?rhel7}
 %bcond_with python3
 %bcond_without python2
+%bcond_without python2_extras
 %else
 # RHEL 8/Fedora: Python 3 only
 %bcond_without python3
 %bcond_with python2
+%bcond_with python2_extras
 %endif
 
 %if 0%{?rhel} >= 8
 # EPEL8 is currently missing dependencies used by the extras metapackages
-%bcond_with extras
+%bcond_with python3_extras
 %else
-%bcond_without extras
+%bcond_without python3_extras
 %endif
 
 Name:           python-%{pypi_name}
@@ -45,7 +47,7 @@ BuildRequires:  pyOpenSSL
 
 # Extras requirements
 # {{{
-%if %{with extras}
+%if %{with python2_extras}
 # EL7 has unversioned names for these packages
 BuildRequires:  python-beautifulsoup4
 BuildRequires:  python-boto3
@@ -66,7 +68,7 @@ BuildRequires:  python3-pyyaml
 
 # Extras requirements
 # {{{
-%if %{with extras}
+%if %{with python3_extras}
 BuildRequires:  python3-beautifulsoup4
 BuildRequires:  python3-boto3
 BuildRequires:  python3-dns >= 1.15.0
@@ -109,7 +111,7 @@ This is the Python 2 version of the package.
 
 # Extras meta-packages (Python 2)
 # {{{
-%if %{with extras}
+%if %{with python2_extras}
 %package -n     python2-%{pypi_name}+easyname
 Summary:        Meta-package for python2-%{pypi_name} and easyname provider
 %{?python_provide:%python_provide python2-%{pypi_name}+easyname}
@@ -227,7 +229,7 @@ This is the Python 3 version of the package.
 
 # Extras meta-packages (Python 3)
 # {{{
-%if %{with extras}
+%if %{with python3_extras}
 %package -n     python3-%{pypi_name}+easyname
 Summary:        Meta-package for python3-%{pypi_name} and easyname provider
 %{?python_provide:%python_provide python3-%{pypi_name}+easyname}
@@ -350,11 +352,13 @@ ln -s %{_bindir}/lexicon-%{python3_version} %{buildroot}/%{_bindir}/lexicon-3
 
 # Extras meta-packages
 # {{{
+%if %{with python2_extras}
 %files -n python2-%{pypi_name}+easyname
 %files -n python2-%{pypi_name}+gratisdns
 %files -n python2-%{pypi_name}+henet
 %files -n python2-%{pypi_name}+plesk
 %files -n python2-%{pypi_name}+route53
+%endif
 # }}}
 %endif
 
@@ -370,7 +374,7 @@ ln -s %{_bindir}/lexicon-%{python3_version} %{buildroot}/%{_bindir}/lexicon-3
 
 # Extras meta-packages
 # {{{
-%if %{with extras}
+%if %{with python3_extras}
 %files -n python3-%{pypi_name}+easyname
 %files -n python3-%{pypi_name}+gratisdns
 %files -n python3-%{pypi_name}+henet
