@@ -27,7 +27,7 @@
 
 Name:           python-%{pypi_name}
 Version:        3.3.17
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        Manipulate DNS records on various DNS providers in a standardized/agnostic way
 
 License:        MIT
@@ -378,6 +378,9 @@ ln -s %{_bindir}/lexicon-%{python3_version} %{buildroot}/%{_bindir}/lexicon-3
 %endif
 
 %changelog
+* Sun May 16 2021 Felix Schwarz <fschwarz@fedoraproject.org> - 3.3.17-4
+- rebuilt
+
 * Sun May 16 2021 Felix Schwarz <fschwarz@fedoraproject.org> - 3.3.17-3
 - enable Python 3 subpackage for EPEL 7
 
