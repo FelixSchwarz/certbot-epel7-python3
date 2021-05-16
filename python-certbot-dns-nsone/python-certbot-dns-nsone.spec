@@ -1,6 +1,8 @@
 %global pypi_name certbot-dns-nsone
 %global py3_prefix python%{python3_pkgversion}
 
+%bcond_without docs
+
 Name:           python-%{pypi_name}
 Version:        1.14.0
 Release:        1%{?dist}
@@ -14,8 +16,6 @@ Source2:        https://dl.eff.org/certbot.pub
 
 BuildArch:      noarch
 
-BuildRequires:  python3-sphinx
-BuildRequires:  %{py3_prefix}-sphinx_rtd_theme
 BuildRequires:  python3-acme >= 0.31.0
 BuildRequires:  python3-certbot >= 1.1.0
 BuildRequires:  python3-devel
@@ -23,6 +23,11 @@ BuildRequires:  python3-dns-lexicon >= 2.2.1
 BuildRequires:  %{py3_prefix}-pytest
 BuildRequires:  python3-setuptools
 BuildRequires:  %{py3_prefix}-zope-interface
+
+%if %{with docs}
+BuildRequires:  python3-sphinx
+BuildRequires:  %{py3_prefix}-sphinx_rtd_theme
+%endif
 
 # Used to verify OpenPGP signature
 BuildRequires:  gnupg2
@@ -62,10 +67,11 @@ rm -rf %{pypi_name}.egg-info
 %build
 %py3_build
 
-# generate html docs
-sphinx-build docs html
-# remove the sphinx-build leftovers
+%if %{with docs}
+sphinx-build-3 docs html
 rm -rf html/.{doctrees,buildinfo}
+%endif
+
 
 %install
 %py3_install
@@ -80,8 +86,10 @@ rm -rf html/.{doctrees,buildinfo}
 %{python3_sitelib}/certbot_dns_nsone
 %{python3_sitelib}/certbot_dns_nsone-%{version}-py%{python3_version}.egg-info
 
+%if %{with docs}
 %files -n python-%{pypi_name}-doc
 %doc html
+%endif
 
 %changelog
 * Wed Apr 07 2021 Felix Schwarz <fschwarz@fedoraproject.org> - 1.14.0-1
