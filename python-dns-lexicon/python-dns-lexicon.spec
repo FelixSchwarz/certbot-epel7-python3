@@ -4,27 +4,30 @@
 %global rhel7 1
 %endif
 
+%bcond_without python3
+
 %if 0%{?rhel7}
-%bcond_with python3
 %bcond_without python2
 %bcond_without python2_extras
 %else
-# RHEL 8/Fedora: Python 3 only
-%bcond_without python3
 %bcond_with python2
 %bcond_with python2_extras
 %endif
 
-%if 0%{?rhel} >= 8
+%if 0%{?rhel}
 # EPEL8 is currently missing dependencies used by the extras metapackages
+# EPEL7: no Python 3 package for "boto3" yet (also we might want to limit the
+# packaged extras to reduce maintenance complexity)
 %bcond_with python3_extras
 %else
 %bcond_without python3_extras
 %endif
 
+%global py3_prefix python%{python3_pkgversion}
+
 Name:           python-%{pypi_name}
 Version:        3.3.17
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Manipulate DNS records on various DNS providers in a standardized/agnostic way
 
 License:        MIT
@@ -60,11 +63,15 @@ BuildRequires:  python-xmltodict
 %if %{with python3}
 BuildRequires:  python3-devel
 BuildRequires:  python3-setuptools
-BuildRequires:  python3-cryptography
+BuildRequires:  %{py3_prefix}-cryptography
 BuildRequires:  python3-future
-BuildRequires:  python3-pyOpenSSL
-BuildRequires:  python3-tldextract
-BuildRequires:  python3-pyyaml
+BuildRequires:  %{py3_prefix}-pyOpenSSL
+BuildRequires:  %{py3_prefix}-tldextract
+%if ! 0%{?rhel7}
+BuildRequires:  %{py3_prefix}-pyyaml
+%else
+BuildRequires:  %{py3_prefix}-PyYAML
+%endif
 
 # Extras requirements
 # {{{
@@ -188,13 +195,17 @@ dependencies necessary to use the Route 53 provider.
 Summary:        %{summary}
 %{?python_provide:%python_provide python3-%{pypi_name}}
 
-Requires:       python3-cryptography
+Requires:       %{py3_prefix}-cryptography
 Requires:       python3-future
 Requires:       python3-requests
 Requires:       python3-setuptools
-Requires:       python3-pyOpenSSL
-Requires:       python3-tldextract
-Requires:       python3-pyyaml
+Requires:       %{py3_prefix}-pyOpenSSL
+Requires:       %{py3_prefix}-tldextract
+%if ! 0%{?rhel7}
+Requires:       %{py3_prefix}-pyyaml
+%else
+Requires:       %{py3_prefix}-PyYAML
+%endif
 
 # Both packages install a Python module named lexicon
 # TODO: Remove this once resolved upstream (see upstream #222)
@@ -367,6 +378,9 @@ ln -s %{_bindir}/lexicon-%{python3_version} %{buildroot}/%{_bindir}/lexicon-3
 %endif
 
 %changelog
+* Sun May 16 2021 Felix Schwarz <fschwarz@fedoraproject.org> - 3.3.17-3
+- enable Python 3 subpackage for EPEL 7
+
 * Wed Mar 04 2020 Felix Schwarz <fschwarz@fedoraproject.org> - 3.3.17-2
 - add missing sources
 
