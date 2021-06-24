@@ -317,6 +317,12 @@ rm -rf %{pypi_name}.egg-info
 %py3_build
 %endif
 
+
+#%%check
+# unable to run the tests on EPEL 7/8 as EPEL does not ship python3-vcrpy
+# (and hence no python3-pytest-vcr)
+
+
 %install
 %if %{with python2}
 %py2_install
