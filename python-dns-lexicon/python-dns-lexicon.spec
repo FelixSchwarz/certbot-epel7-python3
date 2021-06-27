@@ -18,8 +18,8 @@
 %global py3_prefix python%{python3_pkgversion}
 
 Name:           python-%{pypi_name}
-Version:        3.3.17
-Release:        4%{?dist}
+Version:        3.3.28
+Release:        1%{?dist}
 Summary:        Manipulate DNS records on various DNS providers in a standardized/agnostic way
 
 License:        MIT
@@ -258,19 +258,6 @@ Requires:       python3-boto3
 %description -n python3-%{pypi_name}+route53
 This package installs no files. It requires python3-%{pypi_name} and all
 dependencies necessary to use the Route 53 provider.
-
-
-%package -n     python3-%{pypi_name}+hetzner
-Summary:        Meta-package for python3-%{pypi_name} and Hetzner provider
-%{?python_provide:%python_provide python3-%{pypi_name}+hetzner}
-
-Requires:       python3-%{pypi_name} = %{version}-%{release}
-Requires:       python3-beautifulsoup4
-Requires:       python3-dns >= 1.15.0
-
-%description -n python3-%{pypi_name}+hetzner
-This package installs no files. It requires python3-%{pypi_name} and all
-dependencies necessary to use the Hetzner provider.
 %endif
 # }}}
 
@@ -343,7 +330,7 @@ ln -s %{_bindir}/lexicon-%{python3_version} %{buildroot}/%{_bindir}/lexicon-3
 %if %{with python2}
 %files -n python2-%{pypi_name}
 %license LICENSE
-%doc README.md
+%doc README.rst
 %{_bindir}/lexicon-2
 %{_bindir}/lexicon-%{python2_version}
 %{python2_sitelib}/%{modname}
@@ -361,7 +348,7 @@ ln -s %{_bindir}/lexicon-%{python3_version} %{buildroot}/%{_bindir}/lexicon-3
 
 %files -n python3-%{pypi_name}
 %license LICENSE
-%doc README.md
+%doc README.rst
 %{_bindir}/lexicon
 %{_bindir}/lexicon-3
 %{_bindir}/lexicon-%{python3_version}
@@ -374,13 +361,15 @@ ln -s %{_bindir}/lexicon-%{python3_version} %{buildroot}/%{_bindir}/lexicon-3
 %files -n python3-%{pypi_name}+easyname
 %files -n python3-%{pypi_name}+gratisdns
 %files -n python3-%{pypi_name}+henet
-%files -n python3-%{pypi_name}+hetzner
 %files -n python3-%{pypi_name}+plesk
 %files -n python3-%{pypi_name}+route53
 %endif
 # }}}
 
 %changelog
+* Sun Jun 27 2021 Felix Schwarz <fschwarz@fedoraproject.org> - 3.3.28-1
+- update to 3.3.28
+
 * Sun May 16 2021 Felix Schwarz <fschwarz@fedoraproject.org> - 3.3.17-4
 - rebuilt
 

@@ -1,11 +1,11 @@
 diff --git a/setup.py b/setup.py
-index 7d68954..0c211c4 100644
+index 6957521..fe7164d 100644
 --- a/setup.py
 +++ b/setup.py
 @@ -113,14 +113,14 @@ setup(
-     # requirements files see:
      # https://packaging.python.org/en/latest/requirements.html
      install_requires=[
+         'dnspython<2'  # dnspython 2.x has some non-backward compatible changes that breaks localzone for now
 -        'requests[security]',
 +        'requests',
          'tldextract',
