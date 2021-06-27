@@ -1,27 +1,14 @@
 %global pypi_name dns-lexicon
 
-%if 0%{?rhel} && 0%{?rhel} == 7
-%global rhel7 1
-%endif
-
 %bcond_without python3
 
-%if 0%{?rhel7}
 %bcond_without python2
 %bcond_without python2_extras
-%else
-%bcond_with python2
-%bcond_with python2_extras
-%endif
 
-%if 0%{?rhel}
 # EPEL8 is currently missing dependencies used by the extras metapackages
 # EPEL7: no Python 3 package for "boto3" yet (also we might want to limit the
 # packaged extras to reduce maintenance complexity)
 %bcond_with python3_extras
-%else
-%bcond_without python3_extras
-%endif
 
 %global py3_prefix python%{python3_pkgversion}
 
@@ -67,11 +54,7 @@ BuildRequires:  %{py3_prefix}-cryptography
 BuildRequires:  python3-future
 BuildRequires:  %{py3_prefix}-pyOpenSSL
 BuildRequires:  %{py3_prefix}-tldextract
-%if ! 0%{?rhel7}
-BuildRequires:  %{py3_prefix}-pyyaml
-%else
 BuildRequires:  %{py3_prefix}-PyYAML
-%endif
 
 # Extras requirements
 # {{{
@@ -201,11 +184,7 @@ Requires:       python3-requests
 Requires:       python3-setuptools
 Requires:       %{py3_prefix}-pyOpenSSL
 Requires:       %{py3_prefix}-tldextract
-%if ! 0%{?rhel7}
-Requires:       %{py3_prefix}-pyyaml
-%else
 Requires:       %{py3_prefix}-PyYAML
-%endif
 
 # Both packages install a Python module named lexicon
 # TODO: Remove this once resolved upstream (see upstream #222)
@@ -302,9 +281,7 @@ dependencies necessary to use the Hetzner provider.
 %prep
 %setup -n %{pypi_name}-%{version}
 %patch0 -p1
-%if 0%{?rhel7}
 %patch1 -p1
-%endif
 # Remove bundled egg-info
 rm -rf %{pypi_name}.egg-info
 
