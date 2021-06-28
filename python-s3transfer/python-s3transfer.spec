@@ -31,12 +31,12 @@ BuildRequires:  python-nose
 BuildRequires:  python-mock
 BuildRequires:  python-wheel
 BuildRequires:  python-futures
-BuildRequires:  python2-botocore
+BuildRequires:  python2-botocore >= 1.3.0, python2-botocore < 2.0.0
 BuildRequires:  python-coverage
 BuildRequires:  python-unittest2
 %endif # tests
 Requires:       python-futures
-Requires:       python2-botocore
+Requires:       python2-botocore >= 1.3.0, python2-botocore < 2.0.0
 %{?python_provide:%python_provide python2-%{pypi_name}}
 
 %description -n python2-%{pypi_name}
@@ -51,11 +51,11 @@ BuildRequires:  python3-setuptools
 BuildRequires:  python3-nose
 BuildRequires:  python3-mock
 BuildRequires:  python3-wheel
-BuildRequires:  python3-botocore
+BuildRequires:  python3-botocore >= 1.3.0, python3-botocore < 2.0.0
 BuildRequires:  python3-coverage
 BuildRequires:  python3-unittest2
 %endif # tests
-Requires:       python3-botocore
+Requires:       python3-botocore >= 1.3.0, python3-botocore < 2.0.0
 %{?python_provide:%python_provide python3-%{pypi_name}}
 
 %description -n python3-%{pypi_name}
