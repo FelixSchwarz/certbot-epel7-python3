@@ -1,11 +1,9 @@
 %if 0%{?rhel} && 0%{?rhel} <= 7
 %bcond_with python3
-# Minimum nose version is 1.3.3, while EL7 has 1.3.0
-%bcond_with tests
 %else
 %bcond_without python3
-%bcond_without tests
 %endif
+%bcond_without tests
 
 %global pypi_name s3transfer
 
@@ -17,6 +15,8 @@ Summary:        An Amazon S3 Transfer Manager
 License:        ASL 2.0
 URL:            https://github.com/boto/s3transfer
 Source0:        %{pypi_source}
+# required to fix a test failure in the functional tests, present in 0.1.11+
+Patch1:         %{name}-callbackenablingbody.patch
 BuildArch:      noarch
 
 %description
@@ -64,6 +64,7 @@ S3transfer is a Python library for managing Amazon S3 transfers.
 
 %prep
 %setup -q -n %{pypi_name}-%{version}
+%patch1 -p1
 # Remove online tests (see https://github.com/boto/s3transfer/issues/8)
 rm -rf tests/integration
 
