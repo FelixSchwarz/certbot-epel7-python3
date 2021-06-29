@@ -16,7 +16,7 @@ Summary:        An Amazon S3 Transfer Manager
 
 License:        ASL 2.0
 URL:            https://github.com/boto/s3transfer
-Source0:        https://pypi.io/packages/source/s/%{pypi_name}/%{pypi_name}-%{version}.tar.gz
+Source0:        %{pypi_source}
 BuildArch:      noarch
 
 %description
