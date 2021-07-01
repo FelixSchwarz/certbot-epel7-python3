@@ -1,4 +1,11 @@
 %global pypi_name dns-lexicon
+%global modname lexicon
+
+# tests can not be run on Fedora's infrastructure as some tests need additional
+# dependencies which are not present in EPEL.
+# Packagers can run the test suite manually though:
+#   fedpkg mockbuild --enable-network --with tests
+%bcond_with tests
 
 %bcond_without python3
 
@@ -19,50 +26,48 @@ Summary:        Manipulate DNS records on various DNS providers in a standardize
 
 License:        MIT
 URL:            https://github.com/AnalogJ/lexicon
-Source0:        %{pypi_source}
+# pypi releases don't contain necessary data to run the tests
+Source0:        https://github.com/AnalogJ/lexicon/archive/v%{version}/lexicon-%{version}.tar.gz
 BuildArch:      noarch
 
 Patch0:         0000-remove-shebang.patch
 Patch1:         0001-fix-requirements.patch
 
 %if %{with python2}
+BuildRequires:  python-beautifulsoup4
+# do not install python-boto3 as vcr will try to patch botocore then
+# (but EPEL's botocore is too old to be patched)
+#BuildRequires:  python-boto3
 BuildRequires:  python2-devel
+# EL7 doesn't have a current enough version of python2-dns
 BuildRequires:  python2-setuptools
 BuildRequires:  python2-cryptography
 BuildRequires:  python2-future
 BuildRequires:  python2-pyyaml
 BuildRequires:  python2-tldextract
+BuildRequires:  python-virtualenv
+BuildRequires:  python-xmltodict
 # EL7 has an unversioned name for this package
 BuildRequires:  pyOpenSSL
-
-# Extras requirements
-# {{{
-%if %{with python2_extras}
-# EL7 has unversioned names for these packages
-BuildRequires:  python-beautifulsoup4
-BuildRequires:  python-boto3
-BuildRequires:  python-xmltodict
-# EL7 doesn't have a current enough version of python2-dns
-%endif
 # }}}
 %endif
 
 %if %{with python3}
 BuildRequires:  python3-devel
 BuildRequires:  python3-setuptools
+BuildRequires:  %{py3_prefix}-beautifulsoup4
 BuildRequires:  %{py3_prefix}-cryptography
+BuildRequires:  python3-dns >= 1.15.0
 BuildRequires:  python3-future
 BuildRequires:  %{py3_prefix}-pyOpenSSL
 BuildRequires:  %{py3_prefix}-tldextract
 BuildRequires:  %{py3_prefix}-PyYAML
+BuildRequires:  %{py3_prefix}-xmltodict
 
 # Extras requirements
 # {{{
 %if %{with python3_extras}
-BuildRequires:  python3-beautifulsoup4
 BuildRequires:  python3-boto3
-BuildRequires:  python3-dns >= 1.15.0
-BuildRequires:  python3-xmltodict
 %endif
 # }}}
 
@@ -279,9 +284,7 @@ dependencies necessary to use the Hetzner provider.
 
 
 %prep
-%setup -n %{pypi_name}-%{version}
-%patch0 -p1
-%patch1 -p1
+%autosetup -n %{modname}-%{version} -p1
 # Remove bundled egg-info
 rm -rf %{pypi_name}.egg-info
 
@@ -295,9 +298,44 @@ rm -rf %{pypi_name}.egg-info
 %endif
 
 
-#%%check
-# unable to run the tests on EPEL 7/8 as EPEL does not ship python3-vcrpy
-# (and hence no python3-pytest-vcr)
+%if %{with tests}
+# We can not run the test suite on EPEL 7 when using Fedora's infrastructure:
+# - no python3-vcrpy (and hence no python3-pytest-vcr) in EPEL 7
+# - pytest-vcr requires pytest >= 3.0 even for the oldest public version but
+#   EPEL 7 ships pytest 2.7.0 (Python 2) / 2.9.2 (Python 3.6)
+# - dns-lexicon requires mock >= 3.0 but EPEL 7 ships python36-mock 2.0.0-2.el7
+# - python-vcr does not work for requests < 2.16.0
+#
+# Also the upstream tarballs don't include required vcr fixture files
+# ("cassettes") though that could be fixed by using a different tarball.
+%check
+# lexicon providers which do not work due to missing dependencies:
+# - TransipProviderTests
+# - SoftLayerProviderTests
+# - NamecheapProviderTests
+# - NamecheapManagedProviderTests
+# - GransyProviderTests
+# - LocalzoneProviderTests
+TEST_SELECTOR="not AutoProviderTests and not GoDaddyProviderTests and not TransipProviderTests and not SoftLayerProviderTests and not NamecheapProviderTests and not NamecheapManagedProviderTests and not GransyProviderTests and not LocalzoneProviderTests"
+%if %{with python2}
+/usr/bin/virtualenv --system-site-packages venv.py2
+# dnspython 2.0 dropped Python 2 support
+./venv.py2/bin/pip install pytest pytest-vcr 'mock >= 3.0' 'requests == 2.16' 'dnspython < 2'
+# - Route53ProviderTests needs boto3
+# - python-vcr tries to patch botocore if boto3 is installed but only works for
+#   botocore >= 1.11.0 (EPEL 7 currently has python2-botocore 1.6.0)
+PY2_TEST_SELECTOR="${TEST_SELECTOR} and not Route53ProviderTests"
+./venv.py2/bin/pytest -v -k "${PY2_TEST_SELECTOR}" lexicon
+%endif
+
+%if %{with python3}
+%{python3} -m venv --system-site-packages venv.py3
+./venv.py3/bin/pip install pytest pytest-vcr 'mock >= 3.0' 'requests == 2.16'
+# TODO: Route53ProviderTests needs boto3
+TEST_SELECTOR="${TEST_SELECTOR} and not Route53ProviderTests"
+./venv.py3/bin/pytest -v -k "${TEST_SELECTOR}" lexicon
+%endif
+%endif
 
 
 %install
@@ -322,7 +360,7 @@ ln -s %{_bindir}/lexicon-%{python3_version} %{buildroot}/%{_bindir}/lexicon-3
 %endif
 %{_bindir}/lexicon-2
 %{_bindir}/lexicon-%{python2_version}
-%{python2_sitelib}/lexicon
+%{python2_sitelib}/%{modname}
 %{python2_sitelib}/dns_lexicon-%{version}-py?.?.egg-info
 
 # Extras meta-packages
@@ -344,7 +382,7 @@ ln -s %{_bindir}/lexicon-%{python3_version} %{buildroot}/%{_bindir}/lexicon-3
 %{_bindir}/lexicon
 %{_bindir}/lexicon-3
 %{_bindir}/lexicon-%{python3_version}
-%{python3_sitelib}/lexicon
+%{python3_sitelib}/%{modname}
 %{python3_sitelib}/dns_lexicon-%{version}-py?.?.egg-info
 
 # Extras meta-packages
