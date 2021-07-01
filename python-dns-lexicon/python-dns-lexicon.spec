@@ -7,8 +7,6 @@
 #   fedpkg mockbuild --enable-network --with tests
 %bcond_with tests
 
-%bcond_without python3
-
 %bcond_without python2
 %bcond_without python2_extras
 
@@ -52,7 +50,6 @@ BuildRequires:  pyOpenSSL
 # }}}
 %endif
 
-%if %{with python3}
 BuildRequires:  python3-devel
 BuildRequires:  python3-setuptools
 BuildRequires:  %{py3_prefix}-beautifulsoup4
@@ -70,8 +67,6 @@ BuildRequires:  %{py3_prefix}-xmltodict
 BuildRequires:  python3-boto3
 %endif
 # }}}
-
-%endif
 
 %description
 Lexicon provides a way to manipulate DNS records on multiple DNS providers in a
@@ -178,7 +173,6 @@ dependencies necessary to use the Route 53 provider.
 
 
 
-%if %{with python3}
 %package -n     python3-%{pypi_name}
 Summary:        %{summary}
 %{?python_provide:%python_provide python3-%{pypi_name}}
@@ -211,7 +205,7 @@ Summary:        Meta-package for python3-%{pypi_name} and easyname provider
 %{?python_provide:%python_provide python3-%{pypi_name}+easyname}
 
 Requires:       python3-%{pypi_name} = %{version}-%{release}
-Requires:       python3-beautifulsoup4
+Requires:       %{py3_prefix}-beautifulsoup4
 
 %description -n python3-%{pypi_name}+easyname
 This package installs no files. It requires python3-%{pypi_name} and all
@@ -223,7 +217,7 @@ Summary:        Meta-package for python3-%{pypi_name} and gratisdns provider
 %{?python_provide:%python_provide python3-%{pypi_name}+gratisdns}
 
 Requires:       python3-%{pypi_name} = %{version}-%{release}
-Requires:       python3-beautifulsoup4
+Requires:       %{py3_prefix}-beautifulsoup4
 
 %description -n python3-%{pypi_name}+gratisdns
 This package installs no files. It requires python3-%{pypi_name} and all
@@ -235,7 +229,7 @@ Summary:        Meta-package for python3-%{pypi_name} and Hurricane Electric pro
 %{?python_provide:%python_provide python3-%{pypi_name}+henet}
 
 Requires:       python3-%{pypi_name} = %{version}-%{release}
-Requires:       python3-beautifulsoup4
+Requires:       %{py3_prefix}-beautifulsoup4
 
 %description -n python3-%{pypi_name}+henet
 This package installs no files. It requires python3-%{pypi_name} and all
@@ -247,7 +241,7 @@ Summary:        Meta-package for python3-%{pypi_name} and Plesk provider
 %{?python_provide:%python_provide python3-%{pypi_name}+plesk}
 
 Requires:       python3-%{pypi_name} = %{version}-%{release}
-Requires:       python3-xmltodict
+Requires:       %{py3_prefix}-xmltodict
 
 %description -n python3-%{pypi_name}+plesk
 This package installs no files. It requires python3-%{pypi_name} and all
@@ -279,7 +273,6 @@ This package installs no files. It requires python3-%{pypi_name} and all
 dependencies necessary to use the Hetzner provider.
 %endif
 # }}}
-%endif
 
 
 
@@ -293,9 +286,7 @@ rm -rf %{pypi_name}.egg-info
 %py2_build
 %endif
 
-%if %{with python3}
 %py3_build
-%endif
 
 
 %if %{with tests}
@@ -345,19 +336,14 @@ install -pm 0755 %{buildroot}/%{_bindir}/lexicon %{buildroot}/%{_bindir}/lexicon
 ln -s %{_bindir}/lexicon-%{python2_version} %{buildroot}/%{_bindir}/lexicon-2
 %endif
 
-%if %{with python3}
 %py3_install
 install -pm 0755 %{buildroot}/%{_bindir}/lexicon %{buildroot}/%{_bindir}/lexicon-%{python3_version}
 ln -s %{_bindir}/lexicon-%{python3_version} %{buildroot}/%{_bindir}/lexicon-3
-%endif
 
 %if %{with python2}
 %files -n python2-%{pypi_name}
 %license LICENSE
 %doc README.md
-%if ! %{with python3}
-%{_bindir}/lexicon
-%endif
 %{_bindir}/lexicon-2
 %{_bindir}/lexicon-%{python2_version}
 %{python2_sitelib}/%{modname}
@@ -365,17 +351,14 @@ ln -s %{_bindir}/lexicon-%{python3_version} %{buildroot}/%{_bindir}/lexicon-3
 
 # Extras meta-packages
 # {{{
-%if %{with python2_extras}
 %files -n python2-%{pypi_name}+easyname
 %files -n python2-%{pypi_name}+gratisdns
 %files -n python2-%{pypi_name}+henet
 %files -n python2-%{pypi_name}+plesk
 %files -n python2-%{pypi_name}+route53
-%endif
 # }}}
 %endif
 
-%if %{with python3}
 %files -n python3-%{pypi_name}
 %license LICENSE
 %doc README.md
@@ -396,7 +379,6 @@ ln -s %{_bindir}/lexicon-%{python3_version} %{buildroot}/%{_bindir}/lexicon-3
 %files -n python3-%{pypi_name}+route53
 %endif
 # }}}
-%endif
 
 %changelog
 * Sun May 16 2021 Felix Schwarz <fschwarz@fedoraproject.org> - 3.3.17-4
