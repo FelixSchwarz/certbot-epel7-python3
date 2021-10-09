@@ -11,7 +11,7 @@
 
 Name:           certbot
 Version:        1.14.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        A free, automated certificate authority client
 
 License:        ASL 2.0
@@ -81,12 +81,12 @@ Requires:       python3-acme >= 1.8.0
 Requires:       %{py3_prefix}-configargparse >= 0.9.3
 Requires:       python3-configobj >= 5.0.6
 Requires:       %{py3_prefix}-cryptography >= 2.1.4
-Requires:       python3-distro
+Requires:       %{py3_prefix}-distro
 Requires:       %{py3_prefix}-josepy >= 1.1.0
 Requires:       python3-parsedatetime >= 2.4
 Requires:       %{py3_prefix}-pyrfc3339
 Requires:       %{py3_prefix}-pytz
-Requires:       python3-zope-component
+Requires:       %{py3_prefix}-zope-component
 Requires:       %{py3_prefix}-zope-interface
 
 Summary:    Python 3 libraries used by certbot
@@ -163,6 +163,9 @@ restorecon -R %{_sysconfdir}/letsencrypt || :
 %{_bindir}/certbot-3
 
 %changelog
+* Sat Oct 09 2021 Felix Schwarz <fschwarz@fedoraproject.org> - 1.14.0-2
+- use %{py3_prefix} also for Requires
+
 * Wed Apr 07 2021 Felix Schwarz <fschwarz@fedoraproject.org> - 1.14.0-1
 - Update to 1.14.0 (#1946804)
 - also own /var/log/letsencrypt (#1946000)
