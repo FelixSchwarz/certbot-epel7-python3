@@ -8,6 +8,7 @@ Summary:	Python 3 bindings to augeas
 License:	LGPLv2+
 URL:		https://augeas.net/
 Source0:	https://github.com/hercules-team/python-augeas/archive/v%{version}/python-augeas-%{version}.tar.gz
+Patch0:		%{name}-actually-call-augeas-close.patch
 BuildArch:	noarch
 
 BuildRequires:	python3-setuptools

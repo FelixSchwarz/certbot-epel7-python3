@@ -1,0 +1,25 @@
+From aafba109af7665d372446af0543c69dac086ddbe Mon Sep 17 00:00:00 2001
+From: Felix Schwarz <felix.schwarz@oss.schwarz.eu>
+Date: Mon, 11 Oct 2021 23:10:09 +0200
+Subject: [PATCH] correctly close Augeas instance when ffi handle is garbage
+ collected
+
+Previously the lambda would only return (but not call) a reference to
+`self.close`. This bug was introduced in commit bd62d096.
+---
+ augeas/__init__.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/augeas/__init__.py b/augeas/__init__.py
+index e85b0ad..39eb1c5 100644
+--- a/augeas/__init__.py
++++ b/augeas/__init__.py
+@@ -188,7 +188,7 @@ def __init__(self, root=None, loadpath=None, flags=NONE):
+ 
+         # Create the Augeas object
+         self.__handle = ffi.gc(lib.aug_init(root, loadpath, flags),
+-                               lambda x: self.close)
++                               lambda x: self.close())
+         if not self.__handle:
+             raise RuntimeError("Unable to create Augeas object!")
+ 
