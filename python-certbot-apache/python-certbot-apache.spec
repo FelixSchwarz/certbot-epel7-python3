@@ -1,4 +1,5 @@
 %global pypi_name certbot-apache
+%global py3_prefix python%{python3_pkgversion}
 
 Name:       python-%{pypi_name}
 Version:    1.14.0
@@ -18,10 +19,10 @@ BuildRequires:  python3-devel
 BuildRequires: python3-acme >= 0.29.0
 BuildRequires: python3-augeas
 BuildRequires: python3-certbot >= 1.6.0
-BuildRequires: python3-pytest
+BuildRequires: %{py3_prefix}-pytest
 BuildRequires: python3-setuptools >= 39.0.1
-BuildRequires: python3-zope-component
-BuildRequires: python3-zope-interface
+BuildRequires: %{py3_prefix}-zope-component
+BuildRequires: %{py3_prefix}-zope-interface
 
 # Used to verify OpenPGP signature
 BuildRequires:  gnupg2
@@ -42,8 +43,8 @@ Requires:      python3-augeas
 Requires:      python3-acme >= 0.29.0
 Requires:      python3-certbot >= 1.6.0
 BuildRequires: python3-setuptools >= 39.0.1
-Requires:      python3-zope-component
-Requires:      python3-zope-interface
+Requires:      %{py3_prefix}-zope-component
+Requires:      %{py3_prefix}-zope-interface
 Requires:      mod_ssl
 %if 0%{?fedora} || (0%{?rhel} && 0%{?rhel} >= 8)
 #Recommend the CLI as that will be the interface most use
