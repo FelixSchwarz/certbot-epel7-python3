@@ -1,3 +1,6 @@
+
+%global py3_prefix python%{python3_pkgversion}
+
 Name:		python3-augeas
 Version:	1.1.0
 Release:	1%{?dist}
@@ -10,11 +13,11 @@ BuildArch:	noarch
 BuildRequires:	python3-setuptools
 BuildRequires:	python3-devel
 BuildRequires:	augeas
-BuildRequires:	python3-pytest
-BuildRequires:	python3-cffi
+BuildRequires:	%{py3_prefix}-pytest
+BuildRequires:	%{py3_prefix}-cffi
 
 Requires:	augeas-libs
-Requires:	python3-cffi
+Requires:	%{py3_prefix}-cffi
 %{?python_provide:%python_provide python3-augeas}
 
 %description
@@ -30,13 +33,13 @@ python3-augeas is a set of Python bindings around augeas.
 %{py3_install}
 
 %check
-pytest-3
+%{python3} setup.py test
 
 %files -n python3-augeas
 %license COPYING
 %doc AUTHORS README.txt
 %{python3_sitelib}/augeas.py
-%{python3_sitelib}/augeas/*
+%{python3_sitelib}/augeas/
 %{python3_sitelib}/python_augeas-*.egg-info
 %{python3_sitelib}/__pycache__/*
 %{python3_sitelib}/test/*
