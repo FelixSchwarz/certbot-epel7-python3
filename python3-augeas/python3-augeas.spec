@@ -9,6 +9,7 @@ License:	LGPLv2+
 URL:		https://augeas.net/
 Source0:	https://github.com/hercules-team/python-augeas/archive/v%{version}/python-augeas-%{version}.tar.gz
 Patch0:		%{name}-actually-call-augeas-close.patch
+Patch1:		%{name}-do-not-install-test-package.patch
 BuildArch:	noarch
 
 BuildRequires:	python3-setuptools
@@ -43,7 +44,6 @@ python3-augeas is a set of Python bindings around augeas.
 %{python3_sitelib}/augeas/
 %{python3_sitelib}/python_augeas-*.egg-info
 %{python3_sitelib}/__pycache__/*
-%{python3_sitelib}/test/*
 
 
 %changelog
