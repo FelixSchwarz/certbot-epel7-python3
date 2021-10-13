@@ -18,7 +18,7 @@ Summary:        Low-level, data-driven core of boto 3
 
 License:        ASL 2.0
 URL:            https://github.com/boto/botocore
-Source0:        https://pypi.io/packages/source/b/%{pypi_name}/%{pypi_name}-%{version}.tar.gz
+Source0:        %pypi_source
 Patch0:         relax-dependencies-%{version}%{dist}.patch
 BuildArch:      noarch
 
@@ -35,8 +35,7 @@ BuildRequires:  python-sphinx
 BuildRequires:  python-guzzle_sphinx_theme
 %endif # with docs
 %if %{with tests}
-%{?fc23:BuildRequires: mock}
-%{!?fc23:BuildRequires: python2-mock}
+BuildRequires:  python2-mock
 BuildRequires:  python-behave
 BuildRequires:  python-nose
 BuildRequires:  python-six
@@ -65,7 +64,6 @@ BuildRequires:  python3-sphinx
 BuildRequires:  python3-guzzle_sphinx_theme
 %endif # with docs
 %if %{with tests}
-%{?fc24:BuildRequires: python3-behave}
 BuildRequires:  python3-mock
 BuildRequires:  python3-nose
 BuildRequires:  python3-six
@@ -131,8 +129,6 @@ nosetests-2.7 --with-coverage --cover-erase --cover-package botocore --with-xuni
 nosetests-3.5 --with-coverage --cover-erase --cover-package botocore --with-xunit --cover-xml -v tests/unit/ tests/functional/
 %endif # with python3
 %endif # with tests
-
-%{!?_licensedir:%global license %doc}
 
 %files -n python2-%{pypi_name}
 %doc README.rst
