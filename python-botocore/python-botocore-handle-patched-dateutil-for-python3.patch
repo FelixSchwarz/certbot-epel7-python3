@@ -1,0 +1,27 @@
+python-dateutil 2.4.2 in EPEL 7 contains a patch which prevents the exception
+when calling "dateutil.parser.parse(None)" so there is no need a workaround
+inside botocore.
+
+diff --git a/tests/unit/test_validate.py b/tests/unit/test_validate.py
+index 88e809f..e886be2 100644
+--- a/tests/unit/test_validate.py
++++ b/tests/unit/test_validate.py
+@@ -1,6 +1,9 @@
+ from tests import unittest
+ from datetime import datetime
+ import decimal
++import sys
++
++from nose import SkipTest
+ 
+ from botocore.compat import six
+ from botocore.model import ShapeResolver
+@@ -216,6 +219,8 @@ class TestValidateTypes(BaseTestValidate):
+         # This is specifically to test a workaround a bug in dateutil
+         # where low level exceptions can propogate back up to
+         # us.
++        if sys.version_info > (3, 0):
++            raise SkipTest('python-dateutil for Python 3.6 in EPEL 7 was patched')
+         errors = self.get_validation_error_message(
+             given_shapes=self.shapes,
+             input_params={'Timestamp': None})

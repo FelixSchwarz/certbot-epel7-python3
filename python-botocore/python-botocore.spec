@@ -1,25 +1,23 @@
-%if 0%{?rhel} && 0%{?rhel} <= 7
-%bcond_with python3
-%else
-%bcond_without python3
-%endif
 
+%bcond_without python3
 %bcond_without tests
 
 # Disable documentation generation for now
 %bcond_with docs
 
 %global pypi_name botocore
+%global py3_prefix python%{python3_pkgversion}
 
 Name:           python-%{pypi_name}
 Version:        1.6.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Low-level, data-driven core of boto 3
 
 License:        ASL 2.0
 URL:            https://github.com/boto/botocore
 Source0:        %pypi_source
 Patch0:         relax-dependencies-%{version}%{dist}.patch
+Patch1:         %{name}-handle-patched-dateutil-for-python3.patch
 BuildArch:      noarch
 
 %description
@@ -64,17 +62,17 @@ BuildRequires:  python3-sphinx
 BuildRequires:  python3-guzzle_sphinx_theme
 %endif # with docs
 %if %{with tests}
-BuildRequires:  python3-mock
-BuildRequires:  python3-nose
+BuildRequires:  %{py3_prefix}-mock
+BuildRequires:  %{py3_prefix}-nose
 BuildRequires:  python3-six
 BuildRequires:  python3-wheel
-BuildRequires:  python3-docutils
-BuildRequires:  python3-dateutil
+BuildRequires:  %{py3_prefix}-docutils
+BuildRequires:  %{py3_prefix}-dateutil
 BuildRequires:  python3-jmespath
 %endif # with tests
 Requires:       python3-jmespath >= 0.7.1
-Requires:       python3-dateutil >= 1.4
-Requires:       python3-docutils >= 0.10
+Requires:       %{py3_prefix}-dateutil >= 1.4
+Requires:       %{py3_prefix}-docutils >= 0.10
 %{?python_provide:%python_provide python3-%{pypi_name}}
 
 %description -n python3-%{pypi_name}
@@ -125,8 +123,7 @@ rm -rf html/.{doctrees,buildinfo}
 # %{__python2} setup.py test
 nosetests-2.7 --with-coverage --cover-erase --cover-package botocore --with-xunit --cover-xml -v tests/unit/ tests/functional/
 %if %{with python3}
-# %{__python3} setup.py test
-nosetests-3.5 --with-coverage --cover-erase --cover-package botocore --with-xunit --cover-xml -v tests/unit/ tests/functional/
+nosetests-%{python3_version} --with-coverage --cover-erase --cover-package botocore --with-xunit --cover-xml -v tests/unit/ tests/functional/
 %endif # with python3
 %endif # with tests
 
@@ -150,6 +147,9 @@ nosetests-3.5 --with-coverage --cover-erase --cover-package botocore --with-xuni
 %endif # with docs
 
 %changelog
+* Wed Oct 13 2021 Felix Schwarz <fschwarz@fedoraproject.org> - 1.6.0-2
+- add Python 3 subpackage
+
 * Wed Jan 08 2020 David Duncan <davdunc@amazon.com> - 1.13.48-2
 - Update to latest version - 1.13.48
 
