@@ -1,9 +1,10 @@
 %global         srcname  acme
 
-%global py3_prefix python%{python3_pkgversion}
+%global         py3_prefix python%{python3_pkgversion}
+%global         SPHINXBUILD sphinx-build-3
 
 Name:           python-acme
-Version:        1.14.0
+Version:        1.20.0
 Release:        1%{?dist}
 Summary:        Python library for the ACME protocol
 License:        ASL 2.0
@@ -20,12 +21,12 @@ BuildRequires:  python3-devel
 BuildRequires:  python3-sphinx
 BuildRequires:  %{py3_prefix}-sphinx_rtd_theme
 BuildRequires:  %{py3_prefix}-cryptography >= 2.1.4
-BuildRequires:  python3-requests >= 2.6.0
+BuildRequires:  python3-requests >= 2.14.2
 BuildRequires:  %{py3_prefix}-pyOpenSSL >= 17.3.0
 BuildRequires:  %{py3_prefix}-requests-toolbelt
 BuildRequires:  python3-setuptools >= 39.0.1
 BuildRequires:  %{py3_prefix}-pyrfc3339
-BuildRequires:  %{py3_prefix}-josepy >= 1.1.0
+BuildRequires:  %{py3_prefix}-josepy >= 1.9.0
 
 BuildRequires:  %{py3_prefix}-pytest
 BuildRequires:  %{py3_prefix}-pytz
@@ -46,13 +47,12 @@ Python libraries implementing the Automatic Certificate Management Environment
 
 %package -n python3-acme
 Requires: %{py3_prefix}-cryptography >= 2.1.4
-Requires: python3-pyasn1
 Requires: %{py3_prefix}-pyOpenSSL >= 17.3.0
 Requires: %{py3_prefix}-pyrfc3339
 Requires: %{py3_prefix}-pytz
-Requires: python3-requests >= 2.6.0
+Requires: python3-requests >= 2.14.2
 Requires: %{py3_prefix}-requests-toolbelt
-Requires: %{py3_prefix}-josepy >= 1.1.0
+Requires: %{py3_prefix}-josepy >= 1.9.0
 #Recommends: python-acme-doc
 Summary:        %{summary}
 %{?python_provide:%python_provide python3-acme}
@@ -63,7 +63,8 @@ protocol as defined by the IETF. It's used by the Let's Encrypt project.
 
 %if 0%{?fedora}
 %package doc
-Requires: fontawesome-fonts fontawesome-fonts-web
+# CSS uses @font-face … src:local("fontawesome/FontAwesome") format("truetype")
+Requires: fontawesome-fonts
 Summary:  Documentation for python-acme libraries
 
 %description doc
@@ -88,7 +89,7 @@ rm -rf %{srcname}.egg-info
 # man page is pretty useless but api pages are decent
 # Issue opened upstream for improving man page
 # Need to cd as parent makefile tries to build libraries
-(  cd docs && make html SPHINXBUILD=sphinx-build-3 )
+(  cd docs && make html SPHINXBUILD=%{SPHINXBUILD} )
 # Clean up stuff we don't need for docs
 rm -rf docs/_build/html/{.buildinfo,man,_sources}
 %endif
@@ -110,6 +111,9 @@ PYTHONPATH=%{buildroot}%{python3_sitelib} py.test-%{python3_version} -v
 %endif
 
 %changelog
+* Tue Oct 19 2021 Felix Schwarz <fschwarz@fedoraproject.org> - 1.20.0-1
+- Update to 1.20.0 in EPEL 7 (#1813670)
+
 * Wed Apr 07 2021 Felix Schwarz <fschwarz@fedoraproject.org> - 1.14.0-1
 - Update to 1.14.0 (#1946825)
 
