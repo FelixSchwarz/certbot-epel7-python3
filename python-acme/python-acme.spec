@@ -26,7 +26,7 @@ BuildRequires:  %{py3_prefix}-pyOpenSSL >= 17.3.0
 BuildRequires:  %{py3_prefix}-requests-toolbelt
 BuildRequires:  python3-setuptools >= 39.0.1
 BuildRequires:  %{py3_prefix}-pyrfc3339
-BuildRequires:  %{py3_prefix}-josepy >= 1.9.0
+BuildRequires:  python3-josepy >= 1.9.0
 
 BuildRequires:  %{py3_prefix}-pytest
 BuildRequires:  %{py3_prefix}-pytz
@@ -52,7 +52,7 @@ Requires: %{py3_prefix}-pyrfc3339
 Requires: %{py3_prefix}-pytz
 Requires: python3-requests >= 2.14.2
 Requires: %{py3_prefix}-requests-toolbelt
-Requires: %{py3_prefix}-josepy >= 1.9.0
+Requires: python3-josepy >= 1.9.0
 #Recommends: python-acme-doc
 Summary:        %{summary}
 %{?python_provide:%python_provide python3-acme}
